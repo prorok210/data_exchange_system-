@@ -53,6 +53,11 @@ esp_err_t esp_mesh_comm_p2p_start(void)
 
 void app_main(void)
 {
+#ifdef TEST_BUILD
+    ESP_LOGI(MESH_TAG, "Успешная загрузка в режиме тестирования!");
+    return;
+#endif
+
     ESP_ERROR_CHECK(mesh_light_init());
     ESP_ERROR_CHECK(nvs_flash_init());
     /*  tcpip initialization */
@@ -62,7 +67,6 @@ void app_main(void)
     /*  create network interfaces for mesh (only station instance saved for further manipulation, soft AP instance ignored */
     ESP_ERROR_CHECK(esp_netif_create_default_wifi_mesh_netifs(&netif_sta, NULL));
 
-    // Определяем MAC-адрес устройства для более информативных логов
     uint8_t eth_mac[6];
     esp_read_mac(eth_mac, ESP_MAC_WIFI_STA);
     ESP_LOGI(MESH_TAG, "Device MAC: " MACSTR, MAC2STR(eth_mac));
