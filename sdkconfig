@@ -407,6 +407,13 @@ CONFIG_PARTITION_TABLE_MD5=y
 # end of Partition Table
 
 #
+# Mesh Device Configuration
+#
+CONFIG_MESH_DEVICE_TYPE_ROOT=y
+# CONFIG_MESH_DEVICE_TYPE_INTERNAL is not set
+# end of Mesh Device Configuration
+
+#
 # mesh network configuration
 #
 CONFIG_MESH_TOPO_TREE=y

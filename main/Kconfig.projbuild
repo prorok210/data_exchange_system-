@@ -1,3 +1,22 @@
+menu "Mesh Device Configuration"
+    choice MESH_DEVICE_TYPE
+        prompt "Mesh Device Type"
+        default MESH_DEVICE_TYPE_ROOT
+        help
+            Select the type of mesh device.
+
+        config MESH_DEVICE_TYPE_ROOT
+            bool "Root Node"
+            help
+                Configure the device as a root node connecting to router.
+
+        config MESH_DEVICE_TYPE_INTERNAL
+            bool "Internal Node"
+            help
+                Configure the device as an internal node in the mesh network.
+    endchoice
+endmenu
+
 menu "mesh network configuration"
     choice
         bool "Mesh Topology"

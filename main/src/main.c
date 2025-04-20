@@ -53,6 +53,11 @@ esp_err_t esp_mesh_comm_p2p_start(void)
 
 void app_main(void)
 {
+#ifdef TEST_BUILD
+    ESP_LOGI(MESH_TAG, "Успешная загрузка в режиме тестирования!");
+    return;
+#endif
+
     ESP_ERROR_CHECK(mesh_light_init());
     ESP_ERROR_CHECK(nvs_flash_init());
     /*  tcpip initialization */
@@ -61,6 +66,10 @@ void app_main(void)
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     /*  create network interfaces for mesh (only station instance saved for further manipulation, soft AP instance ignored */
     ESP_ERROR_CHECK(esp_netif_create_default_wifi_mesh_netifs(&netif_sta, NULL));
+
+    uint8_t eth_mac[6];
+    esp_read_mac(eth_mac, ESP_MAC_WIFI_STA);
+    ESP_LOGI(MESH_TAG, "Device MAC: " MACSTR, MAC2STR(eth_mac));
 
     /*  wifi initialization */
     wifi_init_config_t config = WIFI_INIT_CONFIG_DEFAULT();
@@ -73,8 +82,16 @@ void app_main(void)
     ESP_ERROR_CHECK(esp_mesh_init());
     ESP_ERROR_CHECK(esp_mesh_set_self_organized(true, false)); 
     ESP_ERROR_CHECK(esp_event_handler_register(MESH_EVENT, ESP_EVENT_ANY_ID, &mesh_event_handler, NULL));
+    
+#ifdef CONFIG_MESH_DEVICE_TYPE_ROOT
+    ESP_LOGI(MESH_TAG, "Configuring device as ROOT node");
     ESP_ERROR_CHECK(esp_mesh_set_type(MESH_ROOT));
     ESP_ERROR_CHECK(esp_mesh_fix_root(true));
+#else
+    ESP_LOGI(MESH_TAG, "Configuring device as INTERNAL node");
+    ESP_ERROR_CHECK(esp_mesh_set_type(MESH_NODE));
+#endif
+
     /*  set mesh topology */
     ESP_ERROR_CHECK(esp_mesh_set_topology(CONFIG_MESH_TOPOLOGY));
     /*  set mesh max layer according to the topology */
@@ -126,4 +143,7 @@ void app_main(void)
     ESP_LOGI(MESH_TAG, "mesh starts successfully, heap:%" PRId32 ", %s<%d>%s, ps:%d",  esp_get_minimum_free_heap_size(),
              esp_mesh_is_root_fixed() ? "root fixed" : "root not fixed",
              esp_mesh_get_topology(), esp_mesh_get_topology() ? "(chain)":"(tree)", esp_mesh_is_ps_enabled());
+
+    ESP_LOGI(MESH_TAG, "Starting mesh with router SSID: %s, channel: %d", 
+             CONFIG_MESH_ROUTER_SSID, CONFIG_MESH_CHANNEL);
 }
