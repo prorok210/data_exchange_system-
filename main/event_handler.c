@@ -5,9 +5,9 @@
 #include "esp_mesh.h"
 #include "esp_log.h"
 #include "esp_netif.h"
-#include "mesh_light.h" // Сначала включаем mesh_light.h
+#include "mesh_light.h"
 #include "event_handler.h"
-#include "common.h" // Затем включаем common.h, который зависит от mesh_light.h
+#include "common.h"
 
 extern esp_netif_t *netif_sta;
 extern const char *MESH_TAG;

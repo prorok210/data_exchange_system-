@@ -107,13 +107,11 @@ menu "mesh network configuration"
 
     config MESH_ROUTER_SSID
         string "Router SSID"
-        default "Xiaomi_AE3B"
         help
             Router SSID.
 
     config MESH_ROUTER_PASSWD
         string "Router password"
-        default "Admin1337$"
         help
             Router password.
 

@@ -100,11 +100,10 @@ void app_main(void)
     /* router */
     cfg.channel = CONFIG_MESH_CHANNEL;
     
-    const char *real_router_ssid = "Xiaomi_AE3B";
-    const char *real_router_password = "Admin1337$";
-    cfg.router.ssid_len = strlen(real_router_ssid);
-    memcpy((uint8_t *) &cfg.router.ssid, real_router_ssid, cfg.router.ssid_len);
-    memcpy((uint8_t *) &cfg.router.password, real_router_password, strlen(real_router_password));
+    cfg.router.ssid_len = strlen(CONFIG_MESH_ROUTER_SSID);
+    memcpy((uint8_t *) &cfg.router.ssid, CONFIG_MESH_ROUTER_SSID, cfg.router.ssid_len);
+    memcpy((uint8_t *) &cfg.router.password, CONFIG_MESH_ROUTER_PASSWD, 
+           strlen(CONFIG_MESH_ROUTER_PASSWD));
     cfg.router.allow_router_switch = true;
     
     /* mesh softAP */
