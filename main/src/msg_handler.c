@@ -15,6 +15,7 @@ static void log_mac(const uint8_t *mac_addr) {
         mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
 }
 
+
 static void process_network_data_to_fc(uint8_t *data, int size) {
     ESP_LOGI(MESH_TAG, "Обработка данных из сети для полетного контроллера, размер: %d", size);
     
@@ -51,11 +52,14 @@ static void process_fc_data_to_network(uint8_t *data, int size) {
     }
 }
 
+
 // Отправка данных по сети
 void esp_mesh_p2p_tx_main(void *arg)
 {
     int i;
     esp_err_t err;
+    int send_count = 0;
+
     mesh_addr_t route_table[CONFIG_MESH_ROUTE_TABLE_SIZE];
     int route_table_size = 0;
     mesh_data_t data;
@@ -64,6 +68,7 @@ void esp_mesh_p2p_tx_main(void *arg)
     data.proto = MESH_PROTO_BIN;
     data.tos = MESH_TOS_P2P;
     is_running = true;
+
     uint8_t uart_buffer[256];
     int uart_data_len = 0;
 
@@ -112,6 +117,7 @@ void esp_mesh_p2p_rx_main(void *arg)
     int recv_count = 0;
     esp_err_t err;
     mesh_addr_t from;
+    int send_count = 0;
     mesh_data_t data;
     int flag = 0;
     data.data = rx_buf;
@@ -120,7 +126,6 @@ void esp_mesh_p2p_rx_main(void *arg)
 
     while (is_running) {
         data.size = RX_SIZE;
-        
         // Получение сообщения из сети
         err = esp_mesh_recv(&from, &data, portMAX_DELAY, &flag, NULL, 0);
         if (err != ESP_OK || !data.size) {
@@ -139,6 +144,7 @@ void esp_mesh_p2p_rx_main(void *arg)
         
         // Обработка полученных данных и отправка на полетный контроллер
         process_network_data_to_fc(data.data, data.size);
+
     }
     vTaskDelete(NULL);
 }

@@ -61,6 +61,7 @@ void app_main(void)
     /*  uart initialization */
     ESP_ERROR_CHECK(uart_init(UART_BAUD_RATE));
 
+
     ESP_ERROR_CHECK(mesh_light_init());
     ESP_ERROR_CHECK(nvs_flash_init());
     /*  tcpip initialization */
