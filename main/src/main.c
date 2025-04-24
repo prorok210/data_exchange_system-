@@ -8,6 +8,7 @@
 #include "common.h"
 #include "event_handler.h"
 #include "msg_handler.h"
+#include "uart_handler.h"
 
 #define RX_SIZE          (1500)
 #define TX_SIZE          (1460)
@@ -57,6 +58,8 @@ void app_main(void)
     ESP_LOGI(MESH_TAG, "Успешная загрузка в режиме тестирования!");
     return;
 #endif
+    /*  uart initialization */
+    ESP_ERROR_CHECK(uart_init(UART_BAUD_RATE));
 
     ESP_ERROR_CHECK(mesh_light_init());
     ESP_ERROR_CHECK(nvs_flash_init());
