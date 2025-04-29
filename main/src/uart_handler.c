@@ -6,7 +6,6 @@
 #include "esp_log.h"
 #include "common.h"
 #include "uart_handler.h"
-#include "mesh_light.h"
 
 #define UART_TAG "UART_HANDLER"
 
@@ -36,15 +35,16 @@ int uart_init(int baud_rate) {
         .data_bits = UART_DATA_8_BITS,
         .parity    = UART_PARITY_DISABLE,
         .stop_bits = UART_STOP_BITS_1,
-        .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
-        .source_clk = UART_SCLK_APB,
+        .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
     };
-    
+
     ESP_LOGI(UART_TAG, "Инициализация UART для полетного контроллера, baud_rate=%d", baud_rate);
-    
+
     ESP_ERROR_CHECK(uart_driver_install(UART_PORT, UART_BUF_SIZE * 2, UART_BUF_SIZE * 2, 0, NULL, 0));
     ESP_ERROR_CHECK(uart_param_config(UART_PORT, &uart_config));
+    #ifndef CONFIG_IDF_TARGET_ESP8266
     ESP_ERROR_CHECK(uart_set_pin(UART_PORT, UART_TX_PIN, UART_RX_PIN, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE));
+    #endif
     
     return 0;
 }

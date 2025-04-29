@@ -2,6 +2,9 @@
 build/
 .cache/
 
+sdkconfig
+sdkconfig.old
+
 # Игнорируем настройки IDE
 .idea/
 .vscode/
@@ -138,6 +141,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+esp-venv/
 env/
 venv/
 ENV/

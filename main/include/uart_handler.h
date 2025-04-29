@@ -6,11 +6,11 @@
 #include "driver/uart.h"
 #include "driver/gpio.h"
 
-#define UART_PORT           UART_NUM_0  // Можно использовать UART_NUM_1 или UART_NUM_2
+#define UART_PORT           UART_NUM_0
 #define UART_BAUD_RATE      115200
-#define UART_BUF_SIZE       1024
-#define UART_TX_PIN         GPIO_NUM_1  // Настройте под свою плату
-#define UART_RX_PIN         GPIO_NUM_3  // Настройте под свою плату
+#define UART_BUF_SIZE       512
+#define UART_TX_PIN         GPIO_NUM_1
+#define UART_RX_PIN         GPIO_NUM_3
 
 /**
  * Функция инициализации
