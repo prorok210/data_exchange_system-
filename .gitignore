@@ -1,9 +1,12 @@
 .vscode/
 build/
 .cache/
+/CMakeFiles/
 
+# Конфигурационные файлы
 sdkconfig
 sdkconfig.old
+sdkconfig.defaults
 
 # Игнорируем настройки IDE
 .idea/

@@ -9,6 +9,7 @@
 
 #define UART_TAG "UART_HANDLER"
 
+
 // Маркеры начала и конца пакета
 #define START_MARKER_1 0xAA
 #define START_MARKER_2 0x55

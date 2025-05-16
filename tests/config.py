@@ -14,7 +14,7 @@ DEFAULT_CONFIGS = {
         "ESP32_2": "/dev/ttyUSB1",
         "ARDUINO": "/dev/ttyACM0"
     },
-    "darwin": {  # macOS
+    "darwin": {
         "ESP32_1": "/dev/tty.SLAB_USBtoUART",
         "ESP32_2": "/dev/tty.SLAB_USBtoUART2",
         "ARDUINO": "/dev/tty.usbmodem*"
