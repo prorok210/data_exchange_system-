@@ -1,22 +1,3 @@
-menu "Mesh Device Configuration"
-    choice MESH_DEVICE_TYPE
-        prompt "Mesh Device Type"
-        default MESH_DEVICE_TYPE_ROOT
-        help
-            Select the type of mesh device.
-
-        config MESH_DEVICE_TYPE_ROOT
-            bool "Root Node"
-            help
-                Configure the device as a root node connecting to router.
-
-        config MESH_DEVICE_TYPE_INTERNAL
-            bool "Internal Node"
-            help
-                Configure the device as an internal node in the mesh network.
-    endchoice
-endmenu
-
 menu "mesh network configuration"
     choice
         bool "Mesh Topology"
@@ -164,6 +145,19 @@ menu "mesh network configuration"
         default "MAP_PASSWD"
         help
             Mesh AP password.
+
+    config MESH_SOFTAP_SSID
+        string "Mesh SoftAP SSID"
+        default "ESP32_MESH"
+        help
+            SSID для точки доступа mesh сети.
+
+    config MESH_SOFTAP_SSID_HIDDEN
+        int "Hide Mesh SoftAP SSID"
+        range 0 1
+        default 0
+        help
+            0: Visible SSID, 1: Hidden SSID
 
     config MESH_AP_CONNECTIONS
         int "Mesh AP Connections"

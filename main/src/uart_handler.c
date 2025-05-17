@@ -4,9 +4,7 @@
 #include "freertos/queue.h"
 #include "driver/uart.h"
 #include "esp_log.h"
-#include "common.h"
 #include "uart_handler.h"
-#include "mesh_light.h"
 
 #define UART_TAG "UART_HANDLER"
 
