@@ -16,7 +16,7 @@
 
 // MAC ESP8266
 static const uint8_t PEER_MAC[6] = {0x40, 0x91, 0x51, 0x52, 0xad, 0x24};
-// MAC этой ESP32: f4:65:0b:46:d9:e0
+// MAC ESP32: f4:65:0b:46:d9:e0
 
 void print_mac() {
     uint8_t mac[6] = {0};
