@@ -2,10 +2,10 @@
 #include "esp_now.h"
 #include "esp_wifi.h"
 #include "esp_log.h"
-#include "drone_message.h"
 #include "esp_mac.h"
+#include "mavlink_handler.h"
 
-#define ESPNOW_MAX_DATA_LEN 250
+#define ESPNOW_MAX_DATA_LEN 256
 static const char* TAG = "ESPNOW";
 
 static void espnow_recv_cb(const esp_now_recv_info_t *recv_info, const uint8_t *data, int len) {
@@ -15,9 +15,9 @@ static void espnow_recv_cb(const esp_now_recv_info_t *recv_info, const uint8_t *
         len = ESPNOW_MAX_DATA_LEN;
     }
     ESP_LOGI(TAG, "Получено %d байт от " MACSTR, len, MAC2STR(mac_addr));
-    drone_message_t drone_msg;
-    if (drone_msg_decode(data, len, &drone_msg) == 0) {
-        drone_msg_log(&drone_msg);
+    
+    for (int i = 0; i < len; i++) {
+        mavlink_parse_byte(data[i]);
     }
 }
 

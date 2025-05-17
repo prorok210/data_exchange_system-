@@ -5,15 +5,12 @@
 #include "driver/uart.h"
 #include "esp_log.h"
 #include "uart_handler.h"
+#include "mavlink_handler.h"
 
 #define UART_TAG "UART_HANDLER"
 
-
-
-// Буферы для приема данных
+// Буфер для приема данных
 static uint8_t data_buffer[UART_BUF_SIZE];
-static int data_index = 0;
-static receive_state_t receive_state = WAIT_START_1;
 
 int uart_init(int baud_rate) {
     uart_config_t uart_config = {
@@ -34,13 +31,14 @@ int uart_init(int baud_rate) {
     return 0;
 }
 
+// Отправить данные по UART
 int uart_send_data(const uint8_t *data, size_t len) {
     if (!data || len == 0) {
         ESP_LOGE(UART_TAG, "Неверные параметры для отправки данных по UART");
         return -1;
     }
     
-
+    // Отправляем данные напрямую - MAVLink уже содержит собственные маркеры
     int sent = uart_write_bytes(UART_PORT, (const char*)data, len);
     
     if (sent < 0) {
@@ -58,12 +56,26 @@ int uart_receive_data(uint8_t *output_buffer, size_t max_len) {
         return -1;
     }
     
-    int len = uart_read_bytes(UART_PORT, output_buffer, max_len, 0);
+    int len = uart_read_bytes(UART_PORT, data_buffer, sizeof(data_buffer), 0);
     
     if (len <= 0) {
         return 0;
     }
     
     ESP_LOGD(UART_TAG, "Прочитано %d байт из UART", len);
-    return len;
+    
+    // Передаем каждый байт в парсер MAVLink
+    for (int i = 0; i < len; i++) {
+        mavlink_parse_byte(data_buffer[i]);
+    }
+    
+    // Если размер данных подходит, копируем их в выходной буфер
+    if (len <= max_len) {
+        memcpy(output_buffer, data_buffer, len);
+        return len;
+    } else {
+        ESP_LOGW(UART_TAG, "Выходной буфер слишком мал для полученных данных: %d > %d", len, max_len);
+        memcpy(output_buffer, data_buffer, max_len);
+        return max_len;
+    }
 }
