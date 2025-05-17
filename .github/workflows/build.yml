@@ -5,8 +5,7 @@ on:
     branches: 
       - '**'
   pull_request:
-    branches: 
-      - '**'
+    branches: [master/esp8266]
 
 jobs:
   build:
@@ -18,11 +17,8 @@ jobs:
       with:
         submodules: 'recursive'
         
-    - name: esp-idf build
-      uses: espressif/esp-idf-ci-action@v1
-      with:
-        esp_idf_version: v5.1
-        target: esp32
+    - name: esp8266 build
+      uses: nsfilho/esp8266-rtos-sdk@v2
         
     - name: Archive firmware artifacts
       uses: actions/upload-artifact@v4
